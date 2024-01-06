@@ -16,10 +16,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
-        <style id='stitches' dangerouslySetInnerHTML={{__html: getCssText()}} />
+        <style
+          id="stitches"
+          dangerouslySetInnerHTML={{ __html: getCssText() }}
+        />
       </Head>
       <main className={`${roboto.className}`}>
-        <Heading as='h1'>Hello World</Heading>
+        <Heading as="h1">Hello World</Heading>
       </main>
     </>
   )
