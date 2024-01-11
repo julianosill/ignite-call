@@ -15,9 +15,10 @@ export function useCalendarWeeks(date: dayjs.Dayjs) {
   const countCalendarWeeks = () => {
     const daysInMonthArray = Array.from({ length: date.daysInMonth() }).map(
       (_, index) => {
+        const currentDate = date.set('date', index + 1)
         return {
-          date: date.set('date', index + 1),
-          disabled: false,
+          date: currentDate,
+          disabled: currentDate.endOf('day').isBefore(new Date()),
         }
       },
     )
