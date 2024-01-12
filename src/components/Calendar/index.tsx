@@ -25,7 +25,7 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
 
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
-  const calendarWeeks = useCalendarWeeks(currentDate)
+  const calendarWeeks = useCalendarWeeks({ date: currentDate })
   const shortWeekDays = getWeekDays({ short: true })
 
   function handlePreviousMonth() {
@@ -37,8 +37,6 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
     const previousMonthDate = currentDate.add(1, 'month')
     setCurrentDate(previousMonthDate)
   }
-
-  console.log('render')
 
   return (
     <CalendarContainer>
