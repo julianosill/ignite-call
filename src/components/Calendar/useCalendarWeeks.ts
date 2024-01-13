@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
-import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
+import dayjs from 'dayjs'
+
+import { api } from '@/lib/axios'
 
 interface useCalendarWeeksProps {
   date: dayjs.Dayjs
@@ -20,20 +21,21 @@ type CalendarWeeks = CalendarWeek[]
 
 interface BlockedDates {
   blockedWeekDays: number[]
+  blockedDates: number[]
 }
 
 export function useCalendarWeeks({ date }: useCalendarWeeksProps) {
   const router = useRouter()
   const username = String(router.query.username)
 
+  const year = date.get('year')
+  const month = String(date.get('month') + 1).padStart(2, '0')
+
   const { data: blockedDates } = useQuery<BlockedDates>({
-    queryKey: ['blocked-dates', date.get('year'), date.get('month')],
+    queryKey: ['blocked-dates', year, month],
     queryFn: async () => {
       const response = await api.get(`/users/${username}/blocked-dates`, {
-        params: {
-          year: date.get('year'),
-          month: date.get('month'),
-        },
+        params: { year, month },
       })
       return response.data
     },
@@ -49,8 +51,8 @@ export function useCalendarWeeks({ date }: useCalendarWeeksProps) {
         const currentDate = date.set('date', index + 1)
         const isDisabled =
           currentDate.endOf('day').isBefore(new Date()) ||
-          blockedDates?.blockedWeekDays.includes(currentDate.get('day'))
-        console.log(isDisabled)
+          blockedDates?.blockedWeekDays.includes(currentDate.get('day')) ||
+          blockedDates?.blockedDates.includes(currentDate.get('date'))
 
         return {
           date: currentDate,
